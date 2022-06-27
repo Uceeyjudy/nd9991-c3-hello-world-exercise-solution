@@ -1,0 +1,7 @@
+ansible-playbook -i inventory.txt main1.yml --private-key=udacity-ansible.pem
+
+aws ec2 describe-instances \
+   --query 'Reservations[*].Instances[*].PublicIpAddress' \
+   --output text >> inventory
+
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory
