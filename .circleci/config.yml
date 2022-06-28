@@ -38,8 +38,31 @@ jobs:
       - run: echo HELLO
       - run: echo WORLD
       - run: echo $_env_name
+  # Exercise: Sharing Files (Job names may have changed)
+  upload_file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo "THIS IS A SAMPLE TEXT" > ~/output.txt  
+      - persist_to_workspace:
+          root: ~/
+          paths: 
+            - output.txt  
+
+  download_file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/output.txt 
+ 
 workflows:
   welcome:
     jobs:
       # - welcome/run
       - print_greetings
+      - upload_file
+      - download_file:
+          requires:
+            - upload_file
