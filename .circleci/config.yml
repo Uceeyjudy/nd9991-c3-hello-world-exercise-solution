@@ -71,6 +71,11 @@ jobs:
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
       - destroy_environment
+      - run:
+          name: Destroy cloudformation stack
+       # Fail the job intentionally to simulate an error.
+          command:  return 1
+      - destroy_environment 
   # Exercise: Config and Deployment
   configure_infrastructure: 
     docker:
@@ -92,13 +97,21 @@ jobs:
   # Exercise: Smoke Testing
   smoke_test:
     docker:
-      - image: amazon/aws-cli
+      - image: alpine:latest
     steps:
+      - run: apk add --update curl
       - run:
-          name: Destroy cloudformation stack
-       # Fail the job intentionally to simulate an error.
-          command:  return 1
-      - destroy_environment  
+          name: smoke test
+          command: |
+            URL="https://blog.udacity.com/"
+            # Test if website exists
+            if curl -s --head ${URL} 
+            then
+              return 0
+            else
+              return 1
+            fi
+      - destroy_environment      
   
 workflows:
   welcome:
