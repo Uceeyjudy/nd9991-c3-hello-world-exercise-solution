@@ -5,3 +5,5 @@ aws ec2 describe-instances \
    --output text >> inventory
 
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory
+
+ansible-playbook main3.yml -i inventory --private-key udacity-ansible.pem
