@@ -182,7 +182,9 @@ jobs:
 
  
 workflows:
-  welcome:
+  # Name the workflow "welcome"
+  my_welcome_workflow:
+    # Run the welcome/run job in its own container
     jobs:
       # - welcome/run
       - print_greetings
@@ -192,8 +194,6 @@ workflows:
             - upload_file
       - create_infrastructure
       - configure_infrastructure
-      - smoke_test
-      - promote_to_production
       - create_and_deploy_front_end
       - promote_to_production:
           requires: 
